@@ -1,0 +1,8 @@
+{
+    "services": {
+        "cloudantNoSQLDB": {
+            "credentials": <PASTE_CLOUDANT_CREDENTIALS_HERE>,
+            "label": "cloudantNoSQLDB"
+        }
+    }
+}

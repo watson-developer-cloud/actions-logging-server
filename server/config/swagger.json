@@ -1,0 +1,73 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Actions Analytics Logging Server"
+  },
+  "consumes": [
+    "text/plain"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "operationId": "get",
+        "description": "Get health status of nodejsmicroservice",
+        "responses": {
+          "200": {
+            "description": "Health check response",
+            "examples": {
+              "application/json": {
+                "status": "UP"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/logging/stats": {
+      "get": {
+        "operationId": "stats",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "assistant",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "description": "Get stats about a specific assistant",
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "examples": {
+              "application/json": {
+                "uniqueUsers": {},
+                "uniqueSessions": {},
+                "requestCounts": {},
+                "intentCounts": {},
+                "recognized": {},
+                "notRecognizedMessages": [],
+                "promptStatus": {},
+                "unusedPrompts": []
+              }
+            }
+          }
+        }
+      }
+    },
+    "/logging/logs_webhook": {
+      "post": {
+        "operationId": "webhook",
+        "description": "POST log data from Watson Assistantwebhook",
+        "responses": {
+          "200": {
+            "description": "Success response"
+          }
+        }
+      }
+    }
+  }
+}
