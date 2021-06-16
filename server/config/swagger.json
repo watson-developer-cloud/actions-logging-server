@@ -61,7 +61,7 @@
     "/logging/logs_webhook": {
       "post": {
         "operationId": "webhook",
-        "description": "POST log data from Watson Assistantwebhook",
+        "description": "POST log data from Watson Assistant webhook",
         "responses": {
           "200": {
             "description": "Success response"
