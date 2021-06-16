@@ -32,7 +32,7 @@ async function logs_webhook(req, res) {
 async function getAssistantStats(req, res) {
     if (!db && !dbController.db) 
         return res.status(400).json("Database not initialized. Please try again")
-    else if (!db)
+    else if (dbController.db)
         db = dbController.db
     
     if (!req.query.assistant)
@@ -190,7 +190,7 @@ async function getPromptStatusByDate(assistant) {
 async function listAssistants(req, res) {
     if (!db && !dbController.db) 
         return res.status(400).json("Database not initialized. Please try again")
-    else if (!db)
+    else if (dbController.db)
         db = dbController.db
 
     const info = await getPartitions()
@@ -221,7 +221,7 @@ async function insert_to_db(assistant, payload) {
     // Make sure db is initialized
     if (!db && !dbController.db) 
         return null
-    else if (!db)
+    else if (dbController.db)
         db = dbController.db
 
     return await (payload.response.output.debug.turn_events ?
