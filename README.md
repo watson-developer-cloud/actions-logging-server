@@ -3,7 +3,9 @@
 
   
 
-This Actions logging server is the backend for the Actions Analytics Dashboard. This server serves two functions. It serves as an endpoint for your **Watson Assistant** webhook with the new **Actions** skill and will store relevant information received from your webhook in your Cloudant database. This server also queries the database to provides relevant analytics to the frontend of your dashboard.
+This Actions logging server is the backend for the Actions Analytics Dashboard. This server serves two functions. It serves as an endpoint for your **Watson Assistant** webhook with the new **Actions** skill and will store relevant information received from your webhook in your Cloudant database. This server also queries the database to provides relevant analytics to the frontend of your dashboard. The corresponding dashboard setup is available at https://github.com/watson-developer-cloud/actions-analytics-dashboard.
+
+For the tutorial for the complete dashboard setup, visit https://zanderb98.medium.com/actions-analytics-for-watson-assistant-dee3df47ad41
 
   
 
