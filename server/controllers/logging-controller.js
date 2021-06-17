@@ -2,14 +2,14 @@ const dbController = require("./db-controller")
 const jwt = require('jsonwebtoken');
 const moment = require("moment")
 const params = require("../config/params")
-const utils = require("../utils")
+const parsing = require("../actions-parsing")
 
 let db = null
 let partitions = null
 
 // Webhook to insert new logs
 async function logs_webhook(req, res) {
-    // console.log("Recieved WEBHOOK w/ payload: \n" + JSON.stringify(req.body.payload))
+    console.log("Recieved WEBHOOK w/ payload: \n" + JSON.stringify(req.body.payload))
 
     if (!req.headers.authorization)
         return res.status(401).send("Please provide authorization")
@@ -190,7 +190,7 @@ async function getPromptStatusByDate(assistant) {
 async function listAssistants(req, res) {
     if (!db && !dbController.db) 
         return res.status(400).json("Database not initialized. Please try again")
-    else if (dbController.db)
+    else if (!db)
         db = dbController.db
 
     const info = await getPartitions()
@@ -230,7 +230,7 @@ async function insert_to_db(assistant, payload) {
 
 // Insert new action log into db
 async function insert_action_to_db(assistant, payload) {
-    if (utils.isWelcomeAction(payload))
+    if (parsing.isWelcomeAction(payload))
         return null
 
     let dict = {}
@@ -254,20 +254,20 @@ async function insert_action_to_db(assistant, payload) {
         dict["recognized"] = true
     }
 
-    let [intent, start_of_action, step, prompt_status] = utils.getTurnEventData(assistant, payload)
+    let [intent, start_of_action, step, prompt_status] = parsing.getTurnEventData(assistant, payload)
 
     dict["intent"] = intent
     dict["start_of_action"] = start_of_action
     dict["step"] = step
     dict["prompt_status"] = prompt_status
 
-    let handler = utils.getActionHandler(payload)
+    let handler = parsing.getActionHandler(payload)
 
     if (handler == "validation_not_found_max_tries_handler")
         dict["prompt_status"] = "fail"
 
     dict["failed_prompt"] = (handler == "validation_not_found_handler" || handler == "validation_not_found_max_tries_handler")
-    dict["unused_prompt"] = start_of_action ? -1 : utils.checkForUnusedPrompt(assistant, payload)
+    dict["unused_prompt"] = start_of_action ? -1 : parsing.checkForUnusedPrompt(assistant, payload)
 
     dict["request"] = payload.request.input
     dict["request"]["timestamp"] = payload.request_timestamp
@@ -306,8 +306,6 @@ async function insert_dialog_to_db(assistant, payload) {
     } catch(error) {
         dict["recognized"] = true
     }
-
-    dict["contained"] = true
 
     let intents = payload.response.output.intents
     var intent = null
