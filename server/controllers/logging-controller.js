@@ -9,7 +9,8 @@ let partitions = null
 
 // Webhook to insert new logs
 async function logs_webhook(req, res) {
-    console.log("Recieved WEBHOOK w/ payload: \n" + JSON.stringify(req.body.payload))
+    if (req.query.debug)
+        console.log("Recieved WEBHOOK w/ payload: \n" + JSON.stringify(req.body.payload))
 
     if (!req.headers.authorization)
         return res.status(401).send("Please provide authorization")
